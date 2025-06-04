@@ -12,7 +12,9 @@ class Routes
         '/user/[0-9]+' => 'UserController@edit',
         '/register' => 'RegisterController@store',
       ],
-      'post' => []
+      'post' => [
+        '/user/update/[0-9]+' => 'UserController@update'
+      ]
     ];
   } //? get
 } //*  Routes

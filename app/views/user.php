@@ -1,9 +1,13 @@
 <?php $this->layout('master', ['title' => $title]) ?>
-<?php $this->start('css') ?>
-<link rel="stylesheet" href="/css/style.css">
-<?php $this->stop() ?>
 
+<h1>User</h1>
 
+<form action="/user/update/12" method="post">
 
-<h1>User </h1>
-<p>Hello, <?= $this->e($name) ?></p>
+  <input type="text" name="firstName" value="Lucas">
+  <input type="text" name="lastName" value="Tenório">
+  <input type="text" name="email" value="lucas@email.com">
+  <input type="text" name="password" value="123">
+
+  <button type="submit">Atualizar</button>
+</form>

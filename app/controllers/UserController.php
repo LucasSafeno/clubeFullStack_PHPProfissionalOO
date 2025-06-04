@@ -10,8 +10,13 @@ class UserController extends Controller
   public function edit($params)
   {
     $this->view('user', [
-      'name' => 'safeno',
-      'title' => 'Página User'
+
+      'title' => 'Editar User'
     ]);
   } //? edit
+
+  public function update($params)
+  {
+    dd($params);
+  } //? update
 }//! UserController
