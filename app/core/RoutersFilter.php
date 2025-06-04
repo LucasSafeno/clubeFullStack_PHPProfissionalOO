@@ -26,13 +26,35 @@ class RoutersFilter
       return $this->routesRegisted[$this->method][$this->uri];
     }
 
-    return 'NotFoundController@index';
+    return null;
   } //? simpleRouter()
 
-  private function dynasmicRouter() {} //? dynamicRouter()
+  private function dynamicRouter()
+  {
+    foreach ($this->routesRegisted[$this->method] as $index => $router) {
+      $regex = str_replace('/', '\/', ltrim($index, '/'));
+      if ($index !== '/' && preg_match("/^$regex$/", trim($this->uri, '/'))) {
+        $routerRegisterFound = $router;
+        break;
+      } else {
+        $routerRegisterFound = null;
+      }
+    }
+    return $routerRegisterFound;
+  } //? dynamicRouter()
 
   public function get()
   {
-    return $this->simpleRouter();
+    $router = $this->simpleRouter();
+    if ($router) {
+      return $router;
+    }
+
+    $router = $this->dynamicRouter();
+    if ($router) {
+      return $router;
+    }
+
+    return 'NotFoundController@index';
   } //? get();
 }//* RoutersFilter
