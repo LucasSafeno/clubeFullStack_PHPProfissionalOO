@@ -6,9 +6,16 @@ class Router
 {
   public static function run()
   {
-    $routerRegisted = new RoutersFilter;
-    $router = $routerRegisted->get();
+    try {
+      $routerRegisted = new RoutersFilter;
+      $router = $routerRegisted->get();
 
-    dd($router);
+      $controller = new Controller;
+      $controller->execute($router);
+
+      dd($router);
+    } catch (\Throwable $e) {
+      echo $e->getMessage();
+    }
   } //? run()
 } //* Router
