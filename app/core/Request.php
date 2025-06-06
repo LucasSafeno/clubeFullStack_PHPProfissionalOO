@@ -33,5 +33,38 @@ class Request
     return $fieldsPost;
   } //? only
 
+  public static function execepts(string|array $except)
+  {
+    $fieldsPost = self::all();
 
+    if (is_array($except)) {
+      foreach ($except as $index => $value) {
+        unset($fieldsPost[$value]);
+      }
+    }
+    if (is_string($except)) {
+      unset($fieldsPost[$except]);
+    }
+    return $fieldsPost;
+  } //? excepts
+
+  public static function query($name)
+  {
+    if (!isset($_GET[$name])) {
+      throw new Exception("não existe a query string {$name}");
+    }
+    return $_GET[$name];
+  } //? query
+
+  public static function toJson(array $data)
+  {
+    return json_encode(($data));
+  } //? toJson
+
+  public static function toArray(string $data)
+  {
+    if (isJson($data)) {
+      return json_decode($data);
+    }
+  } //? toArray
 }//! Request
