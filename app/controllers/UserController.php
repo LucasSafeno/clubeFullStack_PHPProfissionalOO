@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\core\Request;
 use app\controllers\Controller;
 
 class UserController extends Controller
@@ -17,6 +18,8 @@ class UserController extends Controller
 
   public function update($params)
   {
-    dd($params);
+    $response = Request::only(['firstName', 'lastName']);
+
+    dd($response);
   } //? update
 }//! UserController
