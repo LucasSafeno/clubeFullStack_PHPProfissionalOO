@@ -4,12 +4,8 @@ namespace app\database\models;
 
 use app\database\Connection;
 
-class User
+class User extends Model
 {
-  public function fetch()
-  {
-    $connection = Connection::connect();
 
-    dd($connection);
-  } //? fetch
+  protected string $table = 'users';
 } //! User
