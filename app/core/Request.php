@@ -21,16 +21,24 @@ class Request
 
   public static function only(string|array $only)
   {
-    $fieldsPost = self::all();
-    $fieldsPostKeys = array_keys($fieldsPost);
+    $allPostData = self::all(); // Geralmente $_POST
+    $filteredData = [];
 
-    foreach ($fieldsPostKeys as $index => $value) {
-      if ($value != (is_string($only) ? $only : ((isset($only[$index])) ? $only[$index] : null))) {
-        unset($fieldsPost[$value]);
+    if (is_string($only)) {
+      // Se $only for uma única string (nome da chave)
+      if (array_key_exists($only, $allPostData)) {
+        $filteredData[$only] = $allPostData[$only];
+      }
+    } elseif (is_array($only)) {
+      // Se $only for um array de nomes de chaves
+      foreach ($only as $keyName) {
+        if (is_string($keyName) && array_key_exists($keyName, $allPostData)) {
+          $filteredData[$keyName] = $allPostData[$keyName];
+        }
       }
     }
 
-    return $fieldsPost;
+    return $filteredData;
   } //? only
 
   public static function execepts(string|array $except)
