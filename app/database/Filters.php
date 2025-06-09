@@ -26,21 +26,51 @@ class Filters
 
   public function limit(int $limit)
   {
-    $this->filters['limit'] =  "limit {$limit}";
+    if ($limit > 0) {
+      $this->filters['limit'] = " LIMIT {$limit}";
+    }
   } //? limit
 
   public function orderBy(string $field, string $order = 'asc')
   {
-    $this->filters['orderBy'] = " {$field} {$order}";
+    $field = trim(strip_tags($field));
+    $order = strtoupper(trim(strip_tags($order)));
+
+    if (empty($field)) {
+      return;
+    }
+
+    if (!in_array($order, ['ASC', 'DESC'])) {
+      $order = 'ASC';
+    }
+    $this->filters['orderBy'] = " ORDER BY {$field} {$order}";
   } //? orderBy
 
   public function dump()
   {
-    $filter = !empty($this->filter['where']) ? ' where ' . implode(' ', $this->filters['where']) : '';
-    $filter .= $this->filters['orderBy'] ?? '';
-    $filter .= $this->filters['limit'] ?? '';
+    $filterParts = [];
 
-    return $filter;
+    // WHERE clause
+    if (!empty($this->filters['where'])) {
+      $whereContent = implode(' ', $this->filters['where']);
+      // Remove trailing 'and' or 'or' (case-insensitive) and any surrounding spaces
+      $processedWhereContent = preg_replace('/\s+(AND|OR)\s*$/i', '', trim($whereContent));
+      if (!empty($processedWhereContent)) {
+        $filterParts[] = 'WHERE ' . $processedWhereContent;
+      }
+    }
+
+    // ORDER BY clause (already includes leading space and "ORDER BY" keyword)
+    if (isset($this->filters['orderBy'])) {
+      $filterParts[] = trim($this->filters['orderBy']); // Trim to ensure it joins well if it's the first part
+    }
+
+    // LIMIT clause (already includes leading space and "LIMIT" keyword)
+    if (isset($this->filters['limit'])) {
+      $filterParts[] = trim($this->filters['limit']); // Trim to ensure it joins well
+    }
+
+    return implode(' ', $filterParts);
   } //?dump
 
 } //! Filters

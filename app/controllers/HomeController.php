@@ -10,17 +10,14 @@ class HomeController extends Controller
 {
   public function index()
   {
-
     $filters = new Filters;
-    $filters->where('id', '>', 50, 'and');
-    $filters->limit(5);
-    $filters->orderBy('id', 'desc');
+    $filters->where('id', '>', 0);
 
     $user = new User;
     $user->setFilters($filters);
-    $user->fetchAll();
+    $userFound = $user->findBy();
 
-
+    dd($userFound);
     $this->view('home', [
       'title' => 'Home',
       'name' => 'safeno'

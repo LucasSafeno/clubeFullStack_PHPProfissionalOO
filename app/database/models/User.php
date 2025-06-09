@@ -8,4 +8,9 @@ class User extends Model
 {
 
   protected string $table = 'users';
+
+  public function teste()
+  {
+    dd('teste');
+  }
 } //! User
